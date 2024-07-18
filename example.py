@@ -8,8 +8,11 @@ def main():
 
   # testnet
   BLOCK_ENG_URL = "https://dallas.testnet.block-engine.jito.wtf/api/v1"
-  UUID_ENV = "JITO_UUID"
-  sdk = JitoJsonRpcSDK(BLOCK_ENG_URL, UUID_ENV )
+  sdk = JitoJsonRpcSDK(BLOCK_ENG_URL)
+  
+  # If you are using authentication which is not needed unless you request rate limit increase
+  #UUID_ENV = "JITO_UUID"
+  #sdk = JitoJsonRpcSDK(BLOCK_ENG_URL, UUID_ENV)
 
   sdk.get_tip_accounts()
 
