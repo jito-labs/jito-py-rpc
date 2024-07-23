@@ -24,4 +24,6 @@ jobs:
     - name: Run tests
       env:
         JITO_TESTNET_URL: https://dallas.testnet.block-engine.jito.wtf/api/v1
-      run: pytest ./tests/test_jito_json_rpc_sdk.py
+      run: |
+        python3 example.py
+        pytest ./tests/test_jito_json_rpc_sdk.py
