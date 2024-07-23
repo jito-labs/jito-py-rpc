@@ -13,19 +13,34 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
+    - name: Install pyenv
+      run: |
+        curl https://pyenv.run | bash
+        echo 'export PATH="$HOME/.pyenv/bin:$PATH"' >> $GITHUB_ENV
+        echo 'export PYENV_ROOT="$HOME/.pyenv"' >> $GITHUB_ENV
+        echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> $GITHUB_ENV
+        echo 'eval "$(pyenv init --path)"' >> $GITHUB_ENV
+        echo 'eval "$(pyenv init -)"' >> $GITHUB_ENV
+        echo 'eval "$(pyenv virtualenv-init -)"' >> $GITHUB_ENV
+
+    - name: Set up Python ${{ matrix.python-version }} with pyenv
+      run: |
+        source $GITHUB_ENV
+        pyenv install ${{ matrix.python-version }} -s
+        pyenv virtualenv ${{ matrix.python-version }} venv
+        echo 'venv' >> .python-version
+        pyenv activate venv
 
     - name: Install dependencies
       run: |
+        source $GITHUB_ENV
+        pyenv activate venv
         python -m pip install --upgrade pip
         pip install pytest responses
-        sudo pip install .
+        pip install .
 
     - name: Run tests
       run: |
-        ls
-        pwd
+        source $GITHUB_ENV
+        pyenv activate venv
         JITO_TESTNET_URL=https://dallas.testnet.block-engine.jito.wtf/api/v1 pytest ./tests/test_jito_json_rpc_sdk.py
