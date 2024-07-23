@@ -19,7 +19,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pytest responses
-        pip install .
+        pip install -e .
         export PYTHONPATH=$PYTHONPATH:/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages
 
     - name: Run tests
