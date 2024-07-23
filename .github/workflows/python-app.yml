@@ -27,4 +27,6 @@ jobs:
       run: |
         python3 example.py
         pip list | grep jito_jsonrpc_sdk
+        python -m pip list | grep jito_jsonrpc_sdk
+        pip show jito_jsonrpc_sdk
         pytest ./tests/test_jito_json_rpc_sdk.py
