@@ -22,12 +22,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pytest responses
-        ls
-        python setup.py install
-        pip install -e ./jito_jsonrpc_sdk.py
+        pip install .
 
     - name: Run tests
       run: |
         ls
         pwd
-        JITO_TESTNET_URL=https://dallas.testnet.block-engine.jito.wtf/api/v1 pytest ./sdk/tests/test_jito_json_rpc_sdk.py
+        JITO_TESTNET_URL=https://dallas.testnet.block-engine.jito.wtf/api/v1 pytest ./tests/test_jito_json_rpc_sdk.py
