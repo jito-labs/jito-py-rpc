@@ -20,6 +20,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest responses
         pip install .
+        export PYTHONPATH=$PYTHONPATH:/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages
 
     - name: Run tests
       env:
@@ -30,5 +31,4 @@ jobs:
         python -m pip list | grep jito_jsonrpc_sdk
         pip show jito_jsonrpc_sdk
         python check_pytest_imports.py
-        export PYTHONPATH=$PYTHONPATH:/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages
         pytest ./tests/test_jito_json_rpc_sdk.py
