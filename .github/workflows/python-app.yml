@@ -16,27 +16,36 @@ jobs:
     - name: Install pyenv
       run: |
         curl https://pyenv.run | bash
-        echo 'export PYENV_ROOT="$HOME/.pyenv"' >> $GITHUB_ENV
-        echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> $GITHUB_ENV
+        echo 'PYENV_ROOT="$HOME/.pyenv"' >> $GITHUB_ENV
+        echo 'PATH="$PYENV_ROOT/bin:$PATH"' >> $GITHUB_ENV
+        echo 'PATH="$PYENV_ROOT/shims:$PATH"' >> $GITHUB_ENV
+        echo 'PATH="$PYENV_ROOT/bin:$PATH"' >> $GITHUB_ENV
 
     - name: Set up Python ${{ matrix.python-version }} with pyenv
+      env:
+        PYENV_ROOT: ${{ env.PYENV_ROOT }}
+        PATH: ${{ env.PATH }}
       run: |
-        source $GITHUB_ENV
         pyenv install ${{ matrix.python-version }} -s
         pyenv virtualenv ${{ matrix.python-version }} venv
-        echo 'venv' >> .python-version
+        echo "venv" > .python-version
         pyenv activate venv
+        echo "PYENV_VERSION=venv" >> $GITHUB_ENV
 
     - name: Install dependencies
+      env:
+        PYENV_ROOT: ${{ env.PYENV_ROOT }}
+        PATH: ${{ env.PATH }}
+        PYENV_VERSION: venv
       run: |
-        source $GITHUB_ENV
-        pyenv activate venv
         python -m pip install --upgrade pip
         pip install pytest responses
         pip install .
 
     - name: Run tests
+      env:
+        PYENV_ROOT: ${{ env.PYENV_ROOT }}
+        PATH: ${{ env.PATH }}
+        PYENV_VERSION: venv
       run: |
-        source $GITHUB_ENV
-        pyenv activate venv
         JITO_TESTNET_URL=https://dallas.testnet.block-engine.jito.wtf/api/v1 pytest ./tests/test_jito_json_rpc_sdk.py
