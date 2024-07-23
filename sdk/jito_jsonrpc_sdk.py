@@ -18,7 +18,7 @@ class JitoJsonRpcSDK:
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)
     self.log.addHandler(handler)
-    self.log.setLevel(logging.DEBUG)
+    self.log.setLevel(logging.INFO)
     
     if self.log.isEnabledFor(logging.DEBUG):
       self.log.debug(f"URL : {self.url}")
