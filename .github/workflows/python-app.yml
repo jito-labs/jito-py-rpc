@@ -26,4 +26,5 @@ jobs:
     - name: Run tests
       run: |
         ls
-        JITO_TESTNET_URL=https://dallas.testnet.block-engine.jito.wtf/api/v1 ./sdk/tests/pytest test_jito_json_rpc_sdk.py
+        pwd
+        JITO_TESTNET_URL=https://dallas.testnet.block-engine.jito.wtf/api/v1 pytest ./sdk/tests/test_jito_json_rpc_sdk.py
