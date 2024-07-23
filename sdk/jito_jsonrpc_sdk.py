@@ -31,10 +31,22 @@ class JitoJsonRpcSDK:
   def __send_request(self, endpoint, method, params=None):
     if endpoint == None:
       return "Error: Please enter a valid endpoint."
-    headers = {
-        'Content-Type': 'application/json', 
-        "accept": "application/json"
-    }
+    
+    if self.uuid_var == None:
+      {
+        headers = {
+            'Content-Type': 'application/json', 
+            "accept": "application/json"
+        }
+      }
+    else:
+      {
+        headers = {
+            'Content-Type': 'application/json', 
+            "accept": "application/json",
+            "x-jito-atuh": self.uuid_var
+        }
+      }
     data = {
         "id": 1,
         "jsonrpc": "2.0",
