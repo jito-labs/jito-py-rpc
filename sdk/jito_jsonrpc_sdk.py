@@ -33,19 +33,15 @@ class JitoJsonRpcSDK:
       return "Error: Please enter a valid endpoint."
     
     if self.uuid_var == None:
-      {
-        headers = {
-            'Content-Type': 'application/json', 
-            "accept": "application/json"
-        }
+      headers = {
+          'Content-Type': 'application/json', 
+          "accept": "application/json"
       }
     else:
-      {
-        headers = {
-            'Content-Type': 'application/json', 
-            "accept": "application/json",
-            "x-jito-atuh": self.uuid_var
-        }
+      headers = {
+          'Content-Type': 'application/json', 
+          "accept": "application/json",
+          "x-jito-atuh": self.uuid_var
       }
     data = {
         "id": 1,
