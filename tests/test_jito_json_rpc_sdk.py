@@ -1,7 +1,7 @@
 import pytest
 import responses
 import os
-from sdk.jito_jsonrpc_sdk import JitoJsonRpcSDK
+from jito_jsonrpc_sdk import JitoJsonRpcSDK
 
 TESTNET_URL = os.getenv('JITO_TESTNET_URL', 'https://dallas.testnet.block-engine.jito.wtf/api/v1')
 
