@@ -9,6 +9,10 @@ jobs:
       matrix:
         python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
 
+    env:
+      PYENV_ROOT: $HOME/.pyenv
+      PATH: $HOME/.pyenv/bin:$HOME/.pyenv/shims:$PATH
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -16,16 +20,16 @@ jobs:
     - name: Install pyenv
       run: |
         curl https://pyenv.run | bash
-        echo 'PYENV_ROOT="$HOME/.pyenv"' >> $GITHUB_ENV
-        echo 'PATH="$PYENV_ROOT/bin:$PATH"' >> $GITHUB_ENV
-        echo 'PATH="$PYENV_ROOT/shims:$PATH"' >> $GITHUB_ENV
-        echo 'PATH="$PYENV_ROOT/bin:$PATH"' >> $GITHUB_ENV
+        echo 'eval "$(pyenv init --path)"' >> $GITHUB_ENV
+        echo 'eval "$(pyenv init -)"' >> $GITHUB_ENV
+        echo 'eval "$(pyenv virtualenv-init -)"' >> $GITHUB_ENV
 
     - name: Set up Python ${{ matrix.python-version }} with pyenv
-      env:
-        PYENV_ROOT: ${{ env.PYENV_ROOT }}
-        PATH: ${{ env.PATH }}
+      shell: bash -l {0}
       run: |
+        eval "$(pyenv init --path)"
+        eval "$(pyenv init -)"
+        eval "$(pyenv virtualenv-init -)"
         pyenv install ${{ matrix.python-version }} -s
         pyenv virtualenv ${{ matrix.python-version }} venv
         echo "venv" > .python-version
@@ -33,19 +37,21 @@ jobs:
         echo "PYENV_VERSION=venv" >> $GITHUB_ENV
 
     - name: Install dependencies
-      env:
-        PYENV_ROOT: ${{ env.PYENV_ROOT }}
-        PATH: ${{ env.PATH }}
-        PYENV_VERSION: venv
+      shell: bash -l {0}
       run: |
+        eval "$(pyenv init --path)"
+        eval "$(pyenv init -)"
+        eval "$(pyenv virtualenv-init -)"
+        pyenv activate venv
         python -m pip install --upgrade pip
         pip install pytest responses
         pip install .
 
     - name: Run tests
-      env:
-        PYENV_ROOT: ${{ env.PYENV_ROOT }}
-        PATH: ${{ env.PATH }}
-        PYENV_VERSION: venv
+      shell: bash -l {0}
       run: |
+        eval "$(pyenv init --path)"
+        eval "$(pyenv init -)"
+        eval "$(pyenv virtualenv-init -)"
+        pyenv activate venv
         JITO_TESTNET_URL=https://dallas.testnet.block-engine.jito.wtf/api/v1 pytest ./tests/test_jito_json_rpc_sdk.py
