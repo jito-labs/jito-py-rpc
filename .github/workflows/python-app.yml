@@ -18,9 +18,7 @@ jobs:
         curl https://pyenv.run | bash
         echo 'PYENV_ROOT="$HOME/.pyenv"' >> $GITHUB_ENV
         echo '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"' >> $GITHUB_ENV
-        echo 'eval "$(pyenv init -)"'
-        echo 'eval "$(pyenv virtualenv-init -)"'
-        source $GITHUB_ENV
+        echo 'eval "$(pyenv virtualenv-init -)"' >> $GITHUB_ENV
 
     - name: Set up Python ${{ matrix.python-version }} with pyenv
       env:
