@@ -2,7 +2,6 @@
 
 ![Discord](https://img.shields.io/discord/:938287290806042626)
 
-
 This is a minimal SDK that interfaces with the Block-Engine JSON-RPC API using [JSON-RPC 2.0](https://www.jsonrpc.org/specification) specification.
 
 #### Jito MEV Background
