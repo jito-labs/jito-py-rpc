@@ -1,5 +1,4 @@
 import requests
-import logging
 import os
 
 # Jito JSON RPC SDK
@@ -12,17 +11,6 @@ class JitoJsonRpcSDK:
       self.uuid_var = None
     else:
       self.uuid_var = self.__get_uuid(uuid_var)
-    
-    self.log = logging.getLogger(self.__class__.__name__)
-    handler = logging.StreamHandler()
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
-    self.log.addHandler(handler)
-    self.log.setLevel(logging.INFO)
-    
-    if self.log.isEnabledFor(logging.DEBUG):
-      self.log.debug(f"URL : {self.url}")
-      self.log.debug(f"ENV VAR for UUID : {self.uuid_var}")
 
   def __get_uuid(self, uuid_var):
     return os.getenv(uuid_var)
@@ -49,71 +37,46 @@ class JitoJsonRpcSDK:
         "method": method,
         "params": [params]
     }
-    
-    if self.log.isEnabledFor(logging.DEBUG):
-      self.log.debug(f"send_request - endpoint : {self.url + endpoint}")
-      self.log.debug(f"send_request - headers : {headers}")
-      self.log.debug(f"send_request - data : {data}")
 
     try:
       resp = requests.post(self.url + endpoint, headers=headers, json=data)
       resp.raise_for_status()
-      json_data = resp.json()
-      return json_data
+      return {"success": True, "data": resp.json()}
     except requests.exceptions.HTTPError as errh:
-      return f"HTTP Error: {errh}"
+      return {"success": False, "error": f"HTTP Error: {errh}"}
     except requests.exceptions.ConnectionError as errc:
-      return f"Error Connecting: {errc}"
+      return {"success": False, "error": f"Error Connecting: {errc}"}
     except requests.exceptions.Timeout as errt:
-      return f"Timeout Error: {errt}"
+      return {"success": False, "error": f"Timeout Error: {errt}"}
+    except requests.exceptions.InvalidHeader as err:
+      return {"success": False, "error": f"Invalid Header error: {err}"}
+    except requests.exceptions.InvalidURL as err:
+      return {"success": False, "error": f"InvalidURL error: {err}"}
     except requests.exceptions.RequestException as err:
-      return f"An error occurred: {err}"
+      return {"success": False, "error": f"An error occurred: {err}"}
   
   #Bundle Endpoint
   def get_tip_accounts(self, params=None):
     if self.uuid_var == None:
-      result = self.__send_request(endpoint="/bundles", method="getTipAccounts")
+      return self.__send_request(endpoint="/bundles", method="getTipAccounts")
     else:
-      result = self.__send_request(endpoint="/bundles?uuid=" + self.uuid_var, method="getTipAccounts")
-    
-    if self.log.isEnabledFor(logging.DEBUG):
-      self.log.debug(f"get_tip_accounts : {result}")
-    else:
-      self.log.info(result)
+      return self.__send_request(endpoint="/bundles?uuid=" + self.uuid_var, method="getTipAccounts")
 
   def get_bundle_statuses(self, params=None):
     if self.uuid_var == None:
-      result = self.__send_request(endpoint="/bundles", method="getBundleStatuses",params=params)
+      return self.__send_request(endpoint="/bundles", method="getBundleStatuses",params=params)
     else:
-      result = self.__send_request(endpoint="/bundles?uuid=" + self.uuid_var, method="getBundleStatuses",params=params)
-    
-    if self.log.isEnabledFor(logging.DEBUG):
-      self.log.debug(f"get_bundle_statuses : {result}")
-    else:
-      if len(result["result"]["value"]) == 0:
-        self.log.info("Warning: getBundleStatuses - Bundle not found")
-      else:
-        self.log.info(result)
+      return self.__send_request(endpoint="/bundles?uuid=" + self.uuid_var, method="getBundleStatuses",params=params)
 
   def send_bundle(self, params=None):
     if self.uuid_var == None:
-      result = self.__send_request(endpoint="/bundles",method="sendBundle", params=params)
+      return self.__send_request(endpoint="/bundles",method="sendBundle", params=params)
     else:
-      result = self.__send_request(endpoint="/bundles?uuid=" + self.uuid_var, method="sendBundle", params=params)
-    
-    if self.log.isEnabledFor(logging.DEBUG):
-      self.log.debug(f"send_bundle : {result}")
-    else:
-      self.log.info(result)
+      return  self.__send_request(endpoint="/bundles?uuid=" + self.uuid_var, method="sendBundle", params=params)
 
   # Transaction Endpoint
   def send_txn(self, params=None):
     if self.uuid_var == None:
-      result = self.__send_request(endpoint="/transactions",method="sendTransaction", params=params)
+      return self.__send_request(endpoint="/transactions",method="sendTransaction", params=params)
     else:
-      result = self.__send_request(endpoint="/transactions?uuid=" + self.uuid_var, method="sendTransaction", params=params)
-    
-    if self.log.isEnabledFor(logging.DEBUG):
-      self.log.debug(f"send_txn : {result}")
-    else:
-      self.log.info(result)
+      return self.__send_request(endpoint="/transactions?uuid=" + self.uuid_var, method="sendTransaction", params=params)
