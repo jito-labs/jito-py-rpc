@@ -1,6 +1,8 @@
 # Welcome to the Jito Python JSON RPC SDK!
 
-![Discord](https://img.shields.io/discord/:938287290806042626)
+[![Discord](https://img.shields.io/discord/938287290806042626)](https://discord.gg/jito)
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
+
 
 This is a minimal SDK that interfaces with the Block-Engine JSON-RPC API using [JSON-RPC 2.0](https://www.jsonrpc.org/specification) specification.
 
