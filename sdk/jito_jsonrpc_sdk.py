@@ -75,8 +75,17 @@ class JitoJsonRpcSDK:
       return  self.__send_request(endpoint="/bundles?uuid=" + self.uuid_var, method="sendBundle", params=params)
 
   # Transaction Endpoint
-  def send_txn(self, params=None):
-    if self.uuid_var == None:
-      return self.__send_request(endpoint="/transactions",method="sendTransaction", params=params)
-    else:
-      return self.__send_request(endpoint="/transactions?uuid=" + self.uuid_var, method="sendTransaction", params=params)
+  def send_txn(self, params=None, bundleOnly=False):
+    ep = "/transactions"
+    query_params = []
+
+    if bundleOnly:
+        query_params.append("bundleOnly=true")
+    
+    if self.uuid_var is not None:
+        query_params.append(f"uuid={self.uuid_var}")
+
+    if query_params:
+        ep += "?" + "&".join(query_params)
+
+    return self.__send_request(endpoint=ep, method="sendTransaction", params=params)
