@@ -1,5 +1,7 @@
 import requests
 import os
+import json
+import random
 
 # Jito JSON RPC SDK
 # Bindings for https://github.com/jito-labs/mev-protos/blob/master/json_rpc/http.md
@@ -38,6 +40,7 @@ class JitoJsonRpcSDK:
         "params": [params]
     }
 
+    print(data)
     try:
       resp = requests.post(self.url + endpoint, headers=headers, json=data)
       resp.raise_for_status()
@@ -61,18 +64,55 @@ class JitoJsonRpcSDK:
       return self.__send_request(endpoint="/bundles", method="getTipAccounts")
     else:
       return self.__send_request(endpoint="/bundles?uuid=" + self.uuid_var, method="getTipAccounts")
+  
+  def get_random_tip_account(self):
+    response = self.get_tip_accounts()
+    if not response['success']:
+        print(f"Error getting tip accounts: {response.get('error', 'Unknown error')}")
+        return None
+    
+    tip_accounts = response['data']['result']
+    if not tip_accounts:
+        print("No tip accounts found.")
+        return None
+    
+    random_account = random.choice(tip_accounts)
+    return random_account
 
-  def get_bundle_statuses(self, params=None):
-    if self.uuid_var == None:
-      return self.__send_request(endpoint="/bundles", method="getBundleStatuses",params=params)
-    else:
-      return self.__send_request(endpoint="/bundles?uuid=" + self.uuid_var, method="getBundleStatuses",params=params)
+
+  def get_bundle_statuses(self, bundle_uuids):
+      endpoint = "/bundles"
+      if self.uuid_var is not None:
+          endpoint += f"?uuid={self.uuid_var}"
+      
+      # Ensure bundle_uuids is a list
+      if not isinstance(bundle_uuids, list):
+          bundle_uuids = [bundle_uuids]
+      
+      # Correct format for the request
+      params = bundle_uuids
+      
+      return self.__send_request(endpoint=endpoint, method="getBundleStatuses", params=params)
 
   def send_bundle(self, params=None):
     if self.uuid_var == None:
       return self.__send_request(endpoint="/bundles",method="sendBundle", params=params)
     else:
       return  self.__send_request(endpoint="/bundles?uuid=" + self.uuid_var, method="sendBundle", params=params)
+  
+  def get_inflight_bundle_statuses(self, bundle_uuids):
+    endpoint = "/bundles"
+    if self.uuid_var is not None:
+        endpoint += f"?uuid={self.uuid_var}"
+    
+    # Ensure bundle_uuids is a list
+    if not isinstance(bundle_uuids, list):
+        bundle_uuids = [bundle_uuids]
+    
+    # Correct format for the request
+    params = bundle_uuids
+    
+    return self.__send_request(endpoint=endpoint, method="getInflightBundleStatuses", params=params)
 
   # Transaction Endpoint
   def send_txn(self, params=None, bundleOnly=False):
