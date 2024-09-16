@@ -1,122 +1,96 @@
-# Welcome to the Jito Python JSON RPC SDK!
+# jito-sdk-python
 
 [![Discord](https://img.shields.io/discord/938287290806042626?label=Discord&logo=discord&style=flat&color=7289DA)](https://discord.gg/jTSmEzaR)
-[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
+![PyPI](https://img.shields.io/pypi/v/jito-sdk-python?label=PyPI&logo=python)
+[![Documentation](https://img.shields.io/badge/docs-latest-blue.svg)](https://jito-foundation.github.io/jito-sdk-python/)
 
+The Jito JSON-RPC Python SDK provides an interface for interacting with Jito's enhanced Solana infrastructure. This SDK supports methods for managing bundles and transactions, offering improved performance and additional features while interacting with the Block Engine.
 
-This is a minimal SDK that interfaces with the Block-Engine JSON-RPC API using [JSON-RPC 2.0](https://www.jsonrpc.org/specification) specification.
+## Features
 
-#### Jito MEV Background
-For additional information on Jito MEV topics:
+### Bundles
+- `get_inflight_bundle_statuses`: Retrieve the status of in-flight bundles.
+- `get_bundle_statuses`: Fetch the statuses of submitted bundles.
+- `get_tip_accounts`: Get accounts eligible for tips.
+- `send_bundle`: Submit bundles to the Jito Block Engine.
 
-https://jito-labs.gitbook.io/mev
+### Transactions
+- `send_transaction`: Submit transactions with enhanced priority and speed.
 
-#### Jito JSON-RPC HTTP Method
-For more information on the complete JSON-RPC method specification:
+## Installation
 
-https://github.com/jito-labs/mev-protos/blob/master/json_rpc/http.md
+### Prerequisites
 
-## Getting Started
+This project requires Python 3.8 or higher. If you haven't installed Python yet, follow these steps:
 
-### Setting Up the SDK
+1. **Install Python**:
+   Download and install Python from [python.org](https://www.python.org/downloads/)
 
-#### Step 1: Clone the Repository
-Clone the [repo](https://github.com/mdr0id/JitoJsonRpcSDK) to your local machine.
+2. Verify the installation:
+   ```bash
+   python --version
+   ```
 
-```
-git clone git@github.com:mdr0id/JitoJsonRpcSDK.git
-```
+3. (Optional but recommended) Set up a virtual environment:
+   ```bash
+   python -m venv jito-env
+   source jito-env/bin/activate  # On Windows use `jito-env\Scripts\activate`
+   ```
 
-#### Step 2: Install Dependencies
-You will need the Python `requests` module to make HTTP requests. If you don't have `requests` installed, you can install it using pip:
+### Installing jito-sdk-python
 
-```
-pip install requests
-```
+Install the SDK using pip:
 
-## Using the SDK
-#### Step 1: Import the SDK
-
-```
-from sdk.jito_jsonrpc_sdk import JitoJsonRpcSDK
-```
-
-#### Step 2: Initialize the SDK
-Depending on what network you would like to connect to, please select one of the following(e.g mainnet or testnet).
-
-#### Step 3 (Optional): Environment Config for Authentication
-If you are using authentication with UUIDs it is recommended to setup an `.envrc` like below:
-
-```
-export JITO_UUID=513f9c0c-260d-4e14-b5b4-495785548cd2
+```bash
+pip install jito-sdk-python
 ```
 
-For instructions on setting up `direnv` please look [here](https://direnv.net/docs/installation.html)
+## Usage Examples
+
+### Basic Transaction Example
 
 
-##### Mainnet
-For current list of of `mainnet` addresses, please see:
+To run the basic transaction example:
 
-https://jito-labs.gitbook.io/mev/searcher-resources/block-engine/mainnet-addresses
-```
-BLOCK_ENG_URL = "https://mainnet.block-engine.jito.wtf:443/api/v1/bundles"
-sdk = JitoJsonRpcSDK(BLOCK_ENG_URL)
-```
-##### Testnet
-For current list of of `testnet` addresses, please see:
+1. Ensure your environment is set up in `basic_txn.py`:
 
-https://jito-labs.gitbook.io/mev/searcher-resources/block-engine/testnet-addresses
-```
-BLOCK_ENG_URL = "https://dallas.testnet.block-engine.jito.wtf/api/v1/bundles"
-sdk = JitoJsonRpcSDK(BLOCK_ENG_URL)
-```
+   ```python
+   # Load the sender's keypair
+   wallet_path = "/path/to/wallet.json"
 
-#### Step 3: Call JSON-RPC Methods
-You can now call JSON-RPC methods defined in the `http.md` document:
+   # Set up receiver pubkey
+   receiver = Pubkey.from_string("YOUR_RECEIVER_KEY")
+   ```
 
-https://github.com/jito-labs/mev-protos/blob/master/json_rpc/http.md#json-rpc-api-reference
+2. Run the example:
+   ```bash
+   python basic_txn.py
+   ```
 
-##### Example: getTipAccounts
+### Basic Bundle Example
 
-###### Parameters
-- `None`
-  
-```
-sdk.get_tip_accounts()
-```
+To run the basic bundle example:
 
-##### Example: sendBundle
+1. Ensure your environment is set up in `basic_bundle.py`:
 
-###### Parameters
-- `<array[string]>`: `required` Fully-signed Transactions, as encoded string (base-58) upto a maximum of 5. Please note that at this point, we don't support base-64 encoded transactions
+   ```python
+   # Load the sender's keypair
+   wallet_path = "/path/to/wallet.json"
 
-```
-params =  [
-      "4VbvoRYXFaXzDBUYfMXP1irhMZ9XRE6F1keS8GbYzKxgdpEasZtRv6GXxbygPp3yBVeSR4wN9JEauSTnVTKjuq3ktM3JpMebYpdGxZWUttJv9N2DzxBm4vhySdq2hbu1LQX7WxS2xsHG6vNwVCjP33Z2ZLP7S5dZujcan1Xq5Z2HibbbK3M3LD59QVuczyK44Fe3k27kVQ43oRH5L7KgpUS1vBoqTd9ZTzC32H62WPHJeLrQiNkmSB668FivXBAfMg13Svgiu9E",
-      "6HZu11s3SDBz5ytDj1tyBuoeUnwa1wPoKvq6ffivmfhTGahe3xvGpizJkofHCeDn1UgPN8sLABueKE326aGLXkn5yQyrrpuRF9q1TPZqqBMzcDvoJS1khPBprxnXcxNhMUbV78cS2R8LrCU29wjYk5b4JpVtF23ys4ZBZoNZKmPekAW9odcPVXb9HoMnWvx8xwqd7GsVB56R343vAX6HGUMoiB1WgR9jznG655WiXQTff5gPsCP3QJFTXC7iYEYtrcA3dUeZ3q4YK9ipdYZsgAS9H46i9dhDP2Zx3"
-    ]
-sdk.send_bundle(params)
-```
+   # Set up receiver pubkey
+   receiver = Pubkey.from_string("YOUR_RECEIVER_KEY")
+   ```
 
-##### Example: getBundleStatuses
+2. Run the example:
+   ```bash
+   python basic_bundle.py
+   ```
 
-###### Parameters
-- `<array[string]>`: `required` An array of bundle ids to confirm, as base-58 encoded strings (up to a maximum of 5).
-```
-params = ["892b79ed49138bfb3aa5441f0df6e06ef34f9ee8f3976c15b323605bae0cf51d"]
-sdk.get_bundle_statuses(params)
-```
+## Contributing
 
-##### Example: sendTransaction
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-###### Parameters
-- `[string]`: `required` Fully-signed Transaction, as encoded string.
-```
-params =  [
-      "4hXTCkRzt9WyecNzV1XPgCDfGAZzQKNxLXgynz5QDuWWPSAZBZSHptvWRL3BjCvzUXRdKvHL2b7yGrRQcWyaqsaBCncVG7BFggS8w9snUts67BSh3EqKpXLUm5UMHfD7ZBe9GhARjbNQMLJ1QD3Spr6oMTBU6EhdB4RD8CP2xUxr2u3d6fos36PD98XS6oX8TQjLpsMwncs5DAMiD4nNnR8NBfyghGCWvCVifVwvA8B8TJxE1aiyiv2L429BCWfyzAme5sZW8rDb14NeCQHhZbtNqfXhcp2tAnaAT"
-    ]
-sdk.send_txn(params)
-```
+## Support
 
-### Step 4: Handling Responses
-The sdk RPC methods return the JSON response from the server. You can then handle the response according to your program's requirements. For an example, please see example.py when handling a bundle that was not found.
+For support, please join our [Discord community](https://discord.gg/jTSmEzaR).
