@@ -10,9 +10,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: release
     permissions:
-      contents: read
-      id-token: write  # This is needed for good measure, even if we're not using OIDC
+      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
 
     steps:
     - uses: actions/checkout@v3
@@ -27,11 +27,6 @@ jobs:
     - name: Build package
       run: python -m build
     - name: Publish package
-      uses: pypa/gh-action-pypi-publish@release/v1
+      uses: pypa/gh-action-pypi-publish@v1.8.10
       with:
-        user: __token__
         password: ${{ secrets.PYPITOKEN }}
-        verbose: true
-        print-hash: true
-        skip-existing: true
-        repository-url: https://upload.pypi.org/legacy/
