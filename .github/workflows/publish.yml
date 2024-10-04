@@ -10,6 +10,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write  # This is needed for good measure, even if we're not using OIDC
 
     steps:
     - uses: actions/checkout@v3
@@ -28,3 +31,7 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.PYPITOKEN }}
+        verbose: true
+        print-hash: true
+        skip-existing: true
+        repository-url: https://upload.pypi.org/legacy/
