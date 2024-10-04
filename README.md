@@ -2,7 +2,7 @@
 
 [![Discord](https://img.shields.io/discord/938287290806042626?label=Discord&logo=discord&style=flat&color=7289DA)](https://discord.gg/jTSmEzaR)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
-![PyPI](https://img.shields.io/pypi/v/jito-sdk-python?label=PyPI&logo=python)
+![PyPI](https://img.shields.io/pypi/v/jito-py-rpc?label=PyPI&logo=python)
 [![Documentation](https://img.shields.io/badge/docs-latest-blue.svg)](https://jito-foundation.github.io/jito-sdk-python/)
 
 The Jito JSON-RPC Python SDK provides an interface for interacting with Jito's enhanced Solana infrastructure. This SDK supports methods for managing bundles and transactions, offering improved performance and additional features while interacting with the Block Engine.
