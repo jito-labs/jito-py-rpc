@@ -43,7 +43,7 @@ This project requires Python 3.8 or higher. If you haven't installed Python yet,
 Install the SDK using pip:
 
 ```bash
-pip install jito-sdk-python
+pip install jito-py-rpc
 ```
 
 ## Usage Examples
