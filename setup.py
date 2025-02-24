@@ -14,7 +14,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='Jito Labs',
-    author_email='https://discord.gg/jito',
+    author_email='marshall@jito.wtf',
     url='https://github.com/jito-labs/jito-py-rpc',
     classifiers=[
         'Development Status :: 3 - Alpha',
