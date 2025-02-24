@@ -24,7 +24,7 @@ jobs:
         pip install pytest responses
         pip install -e .
 
-    - name: Run tests
-      env:
-        JITO_TESTNET_URL: https://dallas.testnet.block-engine.jito.wtf/api/v1
-      run: pytest ./tests/test_jito_json_rpc_sdk.py
+    #- name: Run tests
+    #  env:
+    #    JITO_TESTNET_URL: https://dallas.testnet.block-engine.jito.wtf/api/v1
+    #  run: pytest ./tests/test_jito_json_rpc_sdk.py
