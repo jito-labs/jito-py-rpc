@@ -1,4 +1,4 @@
-from sdk.jito_jsonrpc_sdk import JitoJsonRpcSDK
+from jito_py_rpc import JitoJsonRpcSDK
 
 
 def main():
