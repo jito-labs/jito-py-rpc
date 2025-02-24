@@ -13,16 +13,7 @@ from solders.transaction_status import TransactionConfirmationStatus
 from solders.signature import Signature
 from solana.rpc.async_api import AsyncClient
 from solana.exceptions import SolanaRpcException
-
-# Get the absolute path of the current script
-current_dir = os.path.dirname(os.path.abspath(__file__))
-
-# Add the jito-py-rpc directory to the Python path (NOTE: Only used until pip CI is stable)
-jito_sdk_path = os.path.join(current_dir, 'jito-py-rpc')
-sys.path.append(jito_sdk_path)
-
-# Import the JitoJsonRpcSDK
-from sdk.jito_jsonrpc_sdk import JitoJsonRpcSDK
+from jito_py_rpc import JitoJsonRpcSDK
 
 async def check_transaction_status(client: AsyncClient, signature_str: str):
     print("Checking transaction status...")

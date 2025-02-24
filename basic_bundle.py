@@ -11,17 +11,7 @@ from solders.transaction import Transaction
 from solders.message import Message
 from solders.instruction import Instruction
 from solders.hash import Hash
-
-# Note this will be removed with CI packaging to allow graceful import
-# Get the absolute path of the current script
-current_dir = os.path.dirname(os.path.abspath(__file__))
-
-# Add the jito-py-rpc directory to the Python path (NOTE: Only used until pip CI is stable)
-jito_sdk_path = os.path.join(current_dir, 'jito-py-rpc')
-sys.path.append(jito_sdk_path)
-
-# Import the JitoJsonRpcSDK
-from sdk.jito_jsonrpc_sdk import JitoJsonRpcSDK
+from jito_py_rpc import JitoJsonRpcSDK
 
 async def check_bundle_status(sdk: JitoJsonRpcSDK, bundle_id: str, max_attempts: int = 30, delay: float = 2.0):
     for attempt in range(max_attempts):
