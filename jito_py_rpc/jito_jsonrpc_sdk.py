@@ -31,7 +31,7 @@ class JitoJsonRpcSDK:
       headers = {
           'Content-Type': 'application/json', 
           "accept": "application/json",
-          "x-jito-atuh": self.uuid_var
+          "x-jito-auth": self.uuid_var
       }
     data = {
         "id": 1,
