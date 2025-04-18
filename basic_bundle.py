@@ -1,6 +1,6 @@
 import asyncio
 import json
-import base58
+import base64
 import os
 import sys
 from solana.rpc.async_api import AsyncClient
@@ -122,7 +122,7 @@ async def basic_bundle():
     solana_client = AsyncClient("https://api.mainnet-beta.solana.com")
 
     # Read wallet from local path
-    wallet_path = "/path/to/wallet.json"
+    wallet_path =  "/path/to/wallet.json"
     with open(wallet_path, 'r') as file:
         wallet_keypair_data = json.load(file)
     wallet_keypair = Keypair.from_bytes(bytes(wallet_keypair_data))
@@ -136,7 +136,7 @@ async def basic_bundle():
     # Set up transaction parameters
     receiver = Pubkey.from_string("YOUR_RECIEVER_KEY")
     jito_tip_account = Pubkey.from_string(jito_client.get_random_tip_account())
-    jito_tip_amount = 1000  # lamports
+    jito_tip_amount = 1000  # lamports (increase if there exists larger volume)
     transfer_amount = 1000  # lamports
 
     # Memo program ID
@@ -176,7 +176,7 @@ async def basic_bundle():
     transaction.sign([wallet_keypair], recent_blockhash.value.blockhash)
 
     # Serialize and base58 encode the entire signed transaction
-    serialized_transaction = base58.b58encode(bytes(transaction)).decode('ascii')
+    serialized_transaction = base64.b64encode(bytes(transaction)).decode('ascii')
 
     try:
             # Prepare the bundle request

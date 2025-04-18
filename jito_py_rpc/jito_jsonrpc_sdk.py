@@ -33,12 +33,21 @@ class JitoJsonRpcSDK:
           "accept": "application/json",
           "x-jito-atuh": self.uuid_var
       }
-    data = {
-        "id": 1,
-        "jsonrpc": "2.0",
-        "method": method,
-        "params": [params]
-    }
+    # Only add encoding parameter for sendBundle and sendTransaction methods
+    if method in ["sendBundle", "sendTransaction"]:
+        data = {
+            "id": 1,
+            "jsonrpc": "2.0",
+            "method": method,
+            "params": [params, {"encoding": "base64"}]
+        }
+    else:
+        data = {
+            "id": 1,
+            "jsonrpc": "2.0",
+            "method": method,
+            "params": [params]
+        }
 
     print(data)
     try:

@@ -2,7 +2,7 @@ import sys
 import os
 import json
 import asyncio
-import base58
+import base64
 from solders.keypair import Keypair
 from solders.pubkey import Pubkey
 from solders.system_program import TransferParams, transfer
@@ -81,8 +81,9 @@ async def send_transaction_with_priority_fee(sdk, solana_client, sender, receive
             recent_blockhash.value.blockhash
         )
 
-        serialized_transaction = base58.b58encode(bytes(transaction)).decode('ascii')
-        
+        #serialized_transaction = base58.b58encode(bytes(transaction)).decode('ascii')
+        serialized_transaction = base64.b64encode(bytes(transaction)).decode('ascii')
+
         print(f"Sending transaction with priority fee: {priority_fee} micro-lamports per compute unit")
         print(f"Transfer amount: {amount} lamports to {receiver}")
         print(f"Jito tip amount: {jito_tip_amount} lamports to {jito_tip_account}")
@@ -122,14 +123,14 @@ async def main():
         private_key = json.load(file)
         sender = Keypair.from_bytes(bytes(private_key))
 
-    receiver = Pubkey.from_string("YOU_RECIEVER_KEY")
+    receiver = Pubkey.from_string("YOUR_RECIEVER_KEY")
 
     print(f"Sender public key: {sender.pubkey()}")
     print(f"Receiver public key: {receiver}")
 
-    priority_fee = 1000  # Lamport for priority fee
+    priority_fee = 1000  # Lamport for priority fee (increase if there exists larger volume)
     amount = 1000  # Lamports to transfer to receiver
-    jito_tip_amount = 1000  # Lamports for Jito tip
+    jito_tip_amount = 1000  # Lamports for Jito tip (increase if there exists larger volume)
 
     signature = await send_transaction_with_priority_fee(sdk, solana_client, sender, receiver, amount, jito_tip_amount, priority_fee)
     
