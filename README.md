@@ -1,6 +1,6 @@
 # jito-sdk-python
 
-[![Discord](https://img.shields.io/discord/938287290806042626?label=Discord&logo=discord&style=flat&color=7289DA)](https://discord.gg/jTSmEzaR)
+[![Discord](https://img.shields.io/discord/938287290806042626?label=Discord&logo=discord&style=flat&color=7289DA)](https://discord.gg/WeAMhmaZ)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
 [![PyPI](https://img.shields.io/pypi/v/jito-py-rpc?label=PyPI&logo=python)](https://pypi.org/project/jito-py-rpc/)
 [![Documentation](https://img.shields.io/badge/docs-latest-blue.svg)](https://pypi.org/project/jito-py-rpc/)
