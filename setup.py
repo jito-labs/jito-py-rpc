@@ -6,7 +6,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='jito_py_rpc',
-    version='0.1.4',  # Bump version
+    version='0.1.5',  # Bump version
     packages=find_packages(),
     install_requires=[
         "requests",

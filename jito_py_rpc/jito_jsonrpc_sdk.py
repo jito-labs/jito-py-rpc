@@ -90,7 +90,7 @@ class JitoJsonRpcSDK:
 
 
   def get_bundle_statuses(self, bundle_uuids):
-      endpoint = "/bundles"
+      endpoint = "/getBundleStatuses"
       if self.uuid_var is not None:
           endpoint += f"?uuid={self.uuid_var}"
       
@@ -110,7 +110,7 @@ class JitoJsonRpcSDK:
       return  self.__send_request(endpoint="/bundles?uuid=" + self.uuid_var, method="sendBundle", params=params)
   
   def get_inflight_bundle_statuses(self, bundle_uuids):
-    endpoint = "/bundles"
+    endpoint = "/getInflightBundleStatuses"
     if self.uuid_var is not None:
         endpoint += f"?uuid={self.uuid_var}"
     
